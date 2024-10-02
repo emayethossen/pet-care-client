@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Providers from "./lib/Provider";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 export const metadata: Metadata = {
   title: "Pet Care Tips & Story",
@@ -16,8 +21,10 @@ export default function RootLayout({
       <body
         className={`antialiased`}
       >
-        {children}
-        Footer
+        <Providers>
+          <div className="">{children}</div>
+          <ToastContainer />
+        </Providers>
       </body>
     </html>
   );
