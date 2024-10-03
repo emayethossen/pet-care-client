@@ -1,44 +1,52 @@
-import { faEnvelope, faMapMarkerAlt, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+// import { faEnvelope, faMapMarkerAlt, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
 // import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import bikeLogo from '../../public/images/bike-logo.png';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import LatestPost from '../pages/LatestPost';
+import nextImage from '../../../../assets/logo.png'
+import Image from 'next/image';
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-500 text-white py-8">
-            <div className="container mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 px-6 text-center md:text-left">
-                <div className="md:col-span-2 space-y-6 md:space-y-4">
+        <footer className="bg-[#FFF9F3] py-8">
+            <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 px-6 text-center md:text-left">
+                <div className="container mx-auto p-4 space-y-6 md:space-y-8">
                     <div className='flex justify-center md:justify-start'>
-                        {/* <Image src={bikeLogo} alt="Bike Logo" width={120} height={60} />  */}
+                        <Image src={nextImage} alt="Prt logo" width={120} height={60} />
                     </div>
-                    <p className='md:w-3/4'>Experience freedom on the road with our convenient, affordable bike rentals, suited for every rider.</p>
+                    <p className='font-semibold'>Discover expert tips, heartwarming stories, and essential advice to ensure your pets live a happy, healthy life. Join our community for the best in pet care and companionship.</p>
+                    <form className="max-w-md  mx-auto flex flex-col sm:flex-row gap-4">
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
+                            className="w-full py-3 px-4 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            required
+                        />
+                        <button
+                            type="submit"
+                            className="py-3 px-6 bg-gradient-to-r from-[#F95C6B] to-[#E51284] text-white rounded-md font-semibold hover:from-red-500 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
+                        >
+                            Subscribe
+                        </button>
+
+                    </form>
                 </div>
-                <div>
-                    <h2 className="font-semibold text-lg mb-2">Service</h2>
-                    <ul>
-                        <li className="py-1">Rental</li>
-                        <li className="py-1">Delivery</li>
-                        <li className="py-1">Apps</li>
-                    </ul>
-                </div>
-                <div>
-                    <h2 className="font-semibold text-lg mb-2">Further Links</h2>
-                    <ul>
+                <div className='container mx-auto p-4 md:ml-16'>
+                    <h1 className="text-2xl font-bold mb-4">Further Links</h1>
+                    <ul className='font-semibold'>
+                        <li className="py-1">Term & Condition</li>
+                        <li className="py-1">News</li>
+                        <li className="py-1">Term & Condition</li>
+                        <li className="py-1">News</li>
                         <li className="py-1">Term & Condition</li>
                         <li className="py-1">News</li>
                     </ul>
                 </div>
                 <div>
-                    <h2 className="font-semibold text-lg mb-2">Get In Touch</h2>
-                    <p className="py-1"><FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2 w-6" />2443 Oak Ridge Omaha, QA 45065</p>
-                    <p className="py-1"><FontAwesomeIcon icon={faPhoneAlt} className="mr-2 w-6" />207-8767-452</p>
-                    <p className="py-1">
-                        <FontAwesomeIcon icon={faEnvelope} className="mr-2 w-6" />support@site.com
-                    </p>
+                    <LatestPost />
                 </div>
             </div>
-            <div className="text-center mt-6">
-                <p>Copyright © 2024 AutoBike | Powered by AutoBike</p>
+            <div className="text-center font-semibold mt-6">
+                <p>Copyright © 2024 PetLove | Powered by PetLove</p>
             </div>
         </footer>
     );

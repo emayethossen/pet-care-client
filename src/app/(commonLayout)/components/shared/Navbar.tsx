@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import nextImage from '../../../../assets/logo.png'
+import Image from "next/image";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -48,12 +50,12 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav className="bg-[#E0F7FA] text-[#121416]">
+        <nav className="bg-[#FFF9F3] text-[#121416]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
+                <div className="flex items-center justify-between h-20">
                     <div className="flex items-center">
                         <Link href="/">
-                            <span className="text-xl font-bold">EMAYET</span>
+                            <Image src={nextImage} alt="Prt logo" width={120} height={60} />
                         </Link>
                         <div className="hidden md:block">
                             <div className="ml-10 flex items-baseline space-x-4">

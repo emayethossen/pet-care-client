@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { format } from "date-fns";
-import Link from "next/link";
 
-const PopularBlogs = async () => {
+const LatestPost = async () => {
     try {
         const res = await fetch("http://localhost:5000/api/posts", {
             cache: "no-store",
@@ -15,12 +14,12 @@ const PopularBlogs = async () => {
         const blogs = await res.json();
 
         return (
-            <div className="container mx-auto border border-red-200 p-4 bg-[#FFF9F3] shadow-lg rounded-xl">
-                <h1 className="text-3xl font-bold ml-4 mb-4">Popular Articals</h1>
+            <div className="container mx-auto p-4">
+                <h1 className="text-2xl font-bold ml-4 mb-4">Recent Posts</h1>
                 <div className="space-y-4">
                     {blogs.length > 0 ? (
-                        blogs.slice(0, 5).map((blog: any) => (
-                            <Link href={blog._id}>
+                        blogs.slice(0, 2).map((blog: any) => (
+                            <div>
                                 <div className="flex gap-4 rounded-lg p-4">
                                     {/* Left Section (Image) */}
                                     <div className="w-2/5 shadow-md">
@@ -45,7 +44,7 @@ const PopularBlogs = async () => {
                                         </div>
                                     </div>
                                 </div>
-                            </Link>
+                            </div>
                         ))
                     ) : (
                         <p>No blogs available</p>
@@ -62,4 +61,4 @@ const PopularBlogs = async () => {
     }
 };
 
-export default PopularBlogs;
+export default LatestPost;

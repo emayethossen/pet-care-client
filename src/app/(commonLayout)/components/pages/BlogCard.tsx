@@ -27,7 +27,7 @@ const BlogCard = ({ blog }) => {
                 <div className="flex items-center gap-4 mb-3">
                     {/* Profile Picture */}
                     <Image
-                        src={blog.author.image} // Author image
+                        src={blog.author.profilePicture} // Author image
                         alt={blog.author.name}
                         width={40}
                         height={40}

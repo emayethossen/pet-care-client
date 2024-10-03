@@ -1,3 +1,5 @@
+import { ThumbsDownIcon, ThumbsUp } from "lucide-react";
+
 const BlogDetails = async ({ params }: { params: { id: string } }) => {
     try {
         const res = await fetch(`http://localhost:5000/api/posts/${params.id}`, {
@@ -39,8 +41,18 @@ const BlogDetails = async ({ params }: { params: { id: string } }) => {
 
                     {/* Upvotes, Downvotes, and Comments Count */}
                     <div className="flex mt-4">
-                        <p className="text-sm text-gray-500 mr-4">Upvotes: {data.upvotes}</p>
-                        <p className="text-sm text-gray-500 mr-4">Downvotes: {data.downvotes}</p>
+                    <div className="flex items-center text-gray-600 space-x-4 mr-6">
+                        {/* Like Count */}
+                        <div className="flex items-center">
+                            <ThumbsUp className="w-5 h-5 mr-1" />
+                            <span>{data.upvotes}</span>
+                        </div>
+                        {/* Dislike Count */}
+                        <div className="flex items-center">
+                            <ThumbsDownIcon className="w-5 h-5 mr-1" />
+                            <span>{data.downvotes}</span>
+                        </div>
+                    </div>
                         <p className="text-sm text-gray-500">Comments: {data.comments.length}</p>
                     </div>
                 </div>
