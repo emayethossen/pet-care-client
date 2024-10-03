@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Command, MessageCircle, ThumbsDown, ThumbsUpIcon } from "lucide-react";
+import { MessageCircle, ThumbsDown, ThumbsUpIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -40,13 +40,15 @@ const AllBlog = async () => {
                   </p>
                   <div className="flex items-center gap-4 mb-3">
                     {/* Profile Picture */}
-                    <Image
-                      src={blog.author.profilePicture} // Author image
-                      alt={blog.author.name}
-                      width={40}
-                      height={40}
-                      className="w-10 h-10 rounded-full"
-                    />
+                    <Link href={`/profile/${blog.author._id}`}>
+                      <Image
+                        src={blog.author.profilePicture} // Author image
+                        alt={blog.author.name}
+                        width={40}
+                        height={40}
+                        className="w-10 h-10 rounded-full"
+                      />
+                    </Link>
                     {/* Author Name and Date */}
                     <p className="text-gray-600 font-bold">By <span className='text-[#F44A72]'>{blog.author.name}</span></p>
                     <p className="text-gray-500 font-medium">{format(new Date(blog.createdAt), 'MMMM dd, yyyy')}</p>

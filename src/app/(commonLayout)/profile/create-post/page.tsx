@@ -1,122 +1,96 @@
-// CreatePost.tsx
-"use client";
-import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic"; // Dynamically import ReactQuill to avoid SSR issues
+'use client';
 
-// Import ReactQuill
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import "react-quill/dist/quill.snow.css";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const CreatePost = () => {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [category, setCategory] = useState("Story");
-    const [isPremium, setIsPremium] = useState(false);
-    const [images, setImages] = useState<File[]>([]);
-    const router = useRouter();
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [category, setCategory] = useState('Tip'); // Default category
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-    // Handle image upload
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            setImages([...e.target.files]);
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+
+        try {
+            const response = await axios.post('http://localhost:5000/api/posts', {
+                title,
+                content,
+                category,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+                },
+            });
+
+            toast.success("Post created successfully!");
+            // Optionally clear the form
+            setTitle('');
+            setContent('');
+            setCategory('Tip'); // Reset to default category
+        } catch (err: any) {
+            setError('Failed to create post. Please try again.'); // Set error message
+            console.error('Error creating post:', err.response?.data || err);
+        } finally {
+            setLoading(false);
         }
     };
 
-    // Handle form submission
-    // Before making the Axios request, log the form data
-const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("content", content);
-    formData.append("category", category);
-    formData.append("isPremium", isPremium ? "true" : "false");
-    images.forEach((image) => {
-        formData.append("images", image);
-    });
-
-    // Log FormData
-    for (const pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
-
-    try {
-        const token = localStorage.getItem("authToken");
-        const response = await axios.post("http://localhost:5000/api/posts", formData, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "multipart/form-data",
-            },
-        });
-        console.log("Post created:", response.data);
-        router.push("/posts");
-    } catch (error) {
-        console.error("Error creating post:", error);
-    }
-};
-
-
     return (
-        <div className="max-w-4xl mx-auto py-10">
-            <h2 className="text-3xl font-semibold mb-6">Create a New Post</h2>
-            <form onSubmit={handleSubmit}>
+        <div className="container mx-auto py-8">
+            <h1 className="text-3xl font-bold mb-6">Create a New Post</h1>
+            <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
                 <div className="mb-4">
-                    <label className="block text-sm font-medium">Title</label>
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
+                        Title
+                    </label>
                     <input
                         type="text"
+                        id="title"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         required
                     />
                 </div>
-
                 <div className="mb-4">
-                    <label className="block text-sm font-medium">Content</label>
-                    <ReactQuill value={content} onChange={setContent} />
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-medium">Category</label>
-                    <select
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
-                    >
-                        <option value="Story">Story</option>
-                        <option value="Tip">Tip</option>
-                    </select>
-                </div>
-
-                <div className="mb-4">
-                    <label className="flex items-center space-x-2">
-                        <input
-                            type="checkbox"
-                            checked={isPremium}
-                            onChange={() => setIsPremium(!isPremium)}
-                        />
-                        <span>Make this content premium</span>
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="content">
+                        Content
                     </label>
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-medium">Upload Images</label>
-                    <input
-                        type="file"
-                        multiple
-                        onChange={handleImageChange}
-                        className="mt-1 block w-full"
+                    <textarea
+                        id="content"
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        rows={5}
+                        required
                     />
                 </div>
-
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+                        Category
+                    </label>
+                    <select
+                        id="category"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    >
+                        <option value="Tip">Tip</option>
+                        <option value="Story">Story</option>
+                    </select>
+                </div>
+                {error && <p className="text-red-500">{error}</p>}
                 <button
                     type="submit"
-                    className="w-full py-2 px-4 text-white bg-blue-600 rounded-md"
+                    className={`bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 transition duration-200 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    disabled={loading}
                 >
-                    Create Post
+                    {loading ? 'Creating...' : 'Create Post'}
                 </button>
             </form>
         </div>
