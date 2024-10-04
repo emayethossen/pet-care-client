@@ -27,7 +27,6 @@ const UserProfile = ({ params }: { params: { userId: string } }) => {
                 }
 
                 const { data } = await res.json();
-                console.log(data)
                 setCurrentUser(data);
 
                 // After fetching the current user, fetch the other user's profile
@@ -99,33 +98,33 @@ const UserProfile = ({ params }: { params: { userId: string } }) => {
     // Handle unfollow user
     const handleUnfollow = async () => {
         try {
-          const res = await fetch("http://localhost:5000/api/users/unfollow", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            },
-            body: JSON.stringify({ unfollowUserId: params.userId }), // Correct key 'unfollowUserId'
-          });
-      
-          if (!res.ok) {
-            const errorData = await res.json();
-            console.error("Unfollow API error details:", errorData);
-            throw new Error("Failed to unfollow user");
-          }
-      
-          setIsFollowing(false);
-          toast.success("You have unfollowed this user.");
-          setProfileData((prev: any) => ({
-            ...prev,
-            followers: prev.followers.filter((id: string) => id !== currentUser._id),
-          }));
+            const res = await fetch("http://localhost:5000/api/users/unfollow", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                },
+                body: JSON.stringify({ unfollowUserId: params.userId }), // Correct key 'unfollowUserId'
+            });
+
+            if (!res.ok) {
+                const errorData = await res.json();
+                console.error("Unfollow API error details:", errorData);
+                throw new Error("Failed to unfollow user");
+            }
+
+            setIsFollowing(false);
+            toast.success("You have unfollowed this user.");
+            setProfileData((prev: any) => ({
+                ...prev,
+                followers: prev.followers.filter((id: string) => id !== currentUser._id),
+            }));
         } catch (error) {
-          console.error("Error unfollowing user:", error);
-          toast.error("Failed to unfollow the user.");
+            console.error("Error unfollowing user:", error);
+            toast.error("Failed to unfollow the user.");
         }
-      };
-      
+    };
+
 
     // Redirect to the user's posts page
     const goToPostsPage = () => {
@@ -149,11 +148,11 @@ const UserProfile = ({ params }: { params: { userId: string } }) => {
                     <div className="flex space-x-4 mt-4">
                         <div className="text-center">
                             <span className="font-bold text-gray-800">{profileData?.followers?.length || 0}</span>
-                            <p className="text-gray-500 text-sm">Followers</p>
+                            <p onClick={() => router.push(`/profile/${params.userId}/followers`)} className="text-gray-500 text-sm">Followers</p>
                         </div>
                         <div className="text-center">
                             <span className="font-bold text-gray-800">{profileData?.following?.length || 0}</span>
-                            <p className="text-gray-500 text-sm">Following</p>
+                            <p onClick={() => router.push(`/profile/${params.userId}/following`)} className="text-gray-500 text-sm">Following</p>
                         </div>
                     </div>
                     <p className="text-gray-600">

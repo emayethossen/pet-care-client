@@ -26,6 +26,7 @@ const BlogCard = ({ blog }) => {
                 {/* Author Info */}
                 <div className="flex items-center gap-4 mb-3">
                     {/* Profile Picture */}
+                    <Link href={`/profile/${blog.author._id}`}>
                     <Image
                         src={blog.author.profilePicture} // Author image
                         alt={blog.author.name}
@@ -33,6 +34,7 @@ const BlogCard = ({ blog }) => {
                         height={40}
                         className="w-10 h-10 rounded-full"
                     />
+                    </Link>
                     {/* Author Name and Date */}
                     <p className="text-gray-600 font-bold">By <span className='text-[#F44A72]'>{blog.author.name}</span></p>
                     <p className="text-gray-500 font-medium">{format(new Date(blog.createdAt), 'MMMM dd, yyyy')}</p>

@@ -26,7 +26,7 @@ const categories = [
     },
 ];
 
-const CategorySlider = () => {
+const Category = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     // Function to show the next category
@@ -86,4 +86,4 @@ const CategorySlider = () => {
     );
 };
 
-export default CategorySlider;
+export default Category;
