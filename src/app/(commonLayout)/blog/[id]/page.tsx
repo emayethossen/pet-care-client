@@ -26,13 +26,12 @@ const BlogDetails = async ({ params }: { params: { id: string } }) => {
             <div className="container mx-auto md:grid grid-cols-3">
                 <div className="col-span-2 py-8 px-4 sm:px-6">
                     {/* Display the image */}
-                    {data.images && data.images.length > 0 && (
+                    
                         <img
-                            src={data.images[0]}
+                            src={data.coverImage}
                             alt={data.title}
                             className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-lg mb-4"
                         />
-                    )}
                     <h1 className="text-4xl text-center font-bold md:mb-4 mb-2">{data.title}</h1>
 
                     {/* Author Info */}
@@ -58,7 +57,8 @@ const BlogDetails = async ({ params }: { params: { id: string } }) => {
 
                     {/* Post Content */}
                     <div className="bg-white rounded-lg px-6 space-y-4">
-                        <p className="text-gray-700">{data.content}</p>
+                        {/* <p className="text-gray-700">{data.content}</p> */}
+                        <div dangerouslySetInnerHTML={{ __html: data.content }} />
                         <div className="flex justify-between items-center text-sm text-gray-500">
                             <p>Author: {data.author.name}</p>
                             <p>Category: {data.category}</p>

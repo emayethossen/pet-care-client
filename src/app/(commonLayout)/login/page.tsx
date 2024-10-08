@@ -30,7 +30,7 @@ const Login = () => {
 
       // Redirect user based on their role
       if (role === 'admin') {
-        router.push('/admin-dashboard'); // Redirect to admin dashboard
+        router.push('/admin'); // Redirect to admin dashboard
       } else if (role === 'user') {
         router.push('/'); // Redirect to user dashboard
       } else {

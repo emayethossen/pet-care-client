@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { format } from "date-fns";
+import Link from "next/link";
 
 const LatestPost = async () => {
     try {
@@ -19,12 +20,12 @@ const LatestPost = async () => {
                 <div className="space-y-4">
                     {blogs.length > 0 ? (
                         blogs.slice(0, 2).map((blog: any) => (
-                            <div>
+                            <Link href={`/blog/${blog._id}`}>
                                 <div className="flex gap-4 rounded-lg p-4">
                                     {/* Left Section (Image) */}
                                     <div className="w-2/5 shadow-md">
                                         <Image
-                                            src={blog.images[0]} // Using the first image from the images array
+                                            src={blog.coverImage} // Using the first image from the images array
                                             alt={blog.title}
                                             width={150}
                                             height={150}
@@ -44,7 +45,7 @@ const LatestPost = async () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))
                     ) : (
                         <p>No blogs available</p>

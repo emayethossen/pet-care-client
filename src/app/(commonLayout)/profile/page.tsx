@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import EditProfileModal from './EditProfileModal'; // Import the modal
 import { toast } from 'react-toastify';
+import MyPosts from './my-post/page';
 
 interface UserProfile {
     name: string;
@@ -18,6 +19,7 @@ interface UserProfile {
 }
 
 const Profile = () => {
+    const DEFAULT_AVATAR_URL = 'https://i.ibb.co.com/M9T8wXw/istockphoto-1251189852-170667a.webp'
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -51,19 +53,26 @@ const Profile = () => {
         setModalOpen(false);
     };
 
-    const handleSubmit = async (data: { name: string; bio: string; phone: string }) => {
+    const handleSubmit = async (data: { name: string; bio: string; phone: string; profilePicture?: string }) => {
+        const updatedData = {
+            name: data.name,
+            bio: data.bio,
+            phone: data.phone,
+            profilePicture: data.profilePicture, // This should be the URL string
+        };
+
         try {
-            const response = await axios.put('http://localhost:5000/api/users/me', data, {
+            const response = await axios.put('http://localhost:5000/api/users/me', updatedData, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('authToken')}`, // Send token
+                    Authorization: `Bearer ${localStorage.getItem('authToken')}`,
                 },
             });
-            setProfile(response.data.data); // Update profile with new data
-            toast.success("Profile updated successfully!");
-            handleCloseModal(); // Close modal after successful update
-        } catch (err: any) {
-            console.error('Error updating profile:', err);
-            setError('Failed to update profile.');
+            setProfile(response.data.data); // Update the profile with new data
+            toast.success("Profile updated successfully!"); // Show success toast
+            handleCloseModal(); // Close the modal after successful update
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            toast.error("Failed to update profile."); // Show error toast
         }
     };
 
@@ -82,7 +91,7 @@ const Profile = () => {
             {profile ? (
                 <div className="max-w-md mx-auto my-10 bg-white shadow-md rounded-lg overflow-hidden">
                     <div className="flex flex-col items-center p-5">
-                        <img className="w-24 h-24 rounded-full border-2 border-gray-300" src={profile.profilePicture} alt="Profile Picture" />
+                        <img className="w-24 h-24 rounded-full border-2 border-gray-300" src={profile.profilePicture || DEFAULT_AVATAR_URL} alt="Profile Picture" />
                         <h1 className="mt-4 text-2xl font-bold text-gray-800">{profile.name}</h1>
                         <p className="mt-2 text-gray-600 text-center px-4">{profile.bio || "Pet Lover"}</p>
                         <div className="flex space-x-4 mt-4">
@@ -117,8 +126,10 @@ const Profile = () => {
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 onSubmit={handleSubmit}
-                formData={profile ? { name: profile.name, bio: profile.bio, phone: profile.phone } : null}
+                formData={profile ? { name: profile.name, bio: profile.bio, phone: profile.phone, profilePicture: profile.profilePicture } : null}
             />
+
+            <MyPosts />
         </div>
     );
 };

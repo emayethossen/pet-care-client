@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import nextImage from '../../../../assets/logo.png'
+import {jwtDecode }from "jwt-decode"; // Import jwt-decode
+import nextImage from '../../../../assets/logo.png';
 import Image from "next/image";
 
 const Navbar = () => {
@@ -29,18 +30,35 @@ const Navbar = () => {
     };
 
     // Function to fetch the user info
+    // const fetchUser = async () => {
+    //     const token = localStorage.getItem("authToken");
+    //     if (token) {
+    //         try {
+    //             const response = await axios.get("http://localhost:5000/api/users/me", {
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                 },
+    //             });
+    //             setUser(response.data);
+    //         } catch (error) {
+    //             console.error("Failed to fetch user data", error);
+    //         }
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     fetchUser();
+    // }, []);
+
     const fetchUser = async () => {
         const token = localStorage.getItem("authToken");
         if (token) {
             try {
-                const response = await axios.get("http://localhost:5000/api/users/me", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setUser(response.data);
+                const decoded = jwtDecode(token);
+                setUser(decoded); // Set user with decoded token data
+                console.log("Decoded user:", decoded); // Debugging log
             } catch (error) {
-                console.error("Failed to fetch user data", error);
+                console.error("Failed to decode token", error);
             }
         }
     };
@@ -49,6 +67,8 @@ const Navbar = () => {
         fetchUser();
     }, []);
 
+
+    console.log("Current user:", user);
     return (
         <nav className="bg-[#FFF9F3] text-[#121416]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -83,6 +103,8 @@ const Navbar = () => {
                                 >
                                     Blog
                                 </Link>
+                                {/* Conditionally render admin links */}
+
                             </div>
                         </div>
                     </div>
@@ -121,6 +143,22 @@ const Navbar = () => {
                                         >
                                             Dashboard
                                         </Link>
+
+                                        {/* Extra admin links in profile menu */}
+                                        {user && user.role === 'admin' && (
+                                            <>
+                                                <Link href="/admin/users" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]">
+                                                    User
+                                                </Link>
+                                                <Link href="/admin/content" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]">
+                                                    Content
+                                                </Link>
+                                                <Link href="/admin/payment" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]">
+                                                    Payment
+                                                </Link>
+                                            </>
+                                        )}
+
                                         <button
                                             onClick={handleLogout}
                                             className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
@@ -209,6 +247,29 @@ const Navbar = () => {
                             >
                                 Dashboard
                             </Link>
+                            {/* Conditionally render admin links for mobile */}
+                            {user.role === 'admin' && (
+                                <>
+                                    <Link
+                                        href="/admin/users"
+                                        className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]"
+                                    >
+                                        User
+                                    </Link>
+                                    <Link
+                                        href="/admin/content"
+                                        className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]"
+                                    >
+                                        Content
+                                    </Link>
+                                    <Link
+                                        href="/admin/payment"
+                                        className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]"
+                                    >
+                                        Payment
+                                    </Link>
+                                </>
+                            )}
                             <button
                                 onClick={handleLogout}
                                 className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]"

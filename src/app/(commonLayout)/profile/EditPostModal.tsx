@@ -1,29 +1,60 @@
-import React, { useEffect, useState } from 'react';
+"use client"
+// EditPostModal.tsx
+
+import React, { useState, useEffect } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { toast } from 'react-toastify';
 
 interface EditPostModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (updatedPost: { title: string; content: string }) => void;
-    postData: { title: string; content: string } | null;
+    onSubmit: (updatedPost: { title: string; content: string; coverImage: string; category: string; isPremium: boolean }) => void;
+    postData: { title: string; content: string; coverImage: string; category: string; isPremium: boolean } | null;
 }
 
 const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, onClose, onSubmit, postData }) => {
     const [title, setTitle] = useState('');
+    const [coverImage, setCoverImage] = useState('');
     const [content, setContent] = useState('');
+    const [category, setCategory] = useState('Tip');
+    const [isPremium, setIsPremium] = useState(false);
 
     useEffect(() => {
         if (postData) {
             setTitle(postData.title);
+            setCoverImage(postData.coverImage);
             setContent(postData.content);
+            setCategory(postData.category);
+            setIsPremium(postData.isPremium);
         }
     }, [postData]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit({ title, content });
+        onSubmit({ title, content, coverImage, category, isPremium });
     };
 
     if (!isOpen) return null;
+
+    const modules = {
+        toolbar: [
+            [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'align': [] }],
+            ['link', 'image', 'code-block'],
+            ['clean']
+        ],
+    };
+
+    const formats = [
+        'header', 'font', 'size',
+        'bold', 'italic', 'underline', 'strike', 'blockquote',
+        'list', 'bullet', 'indent',
+        'link', 'image', 'color', 'background', 'align', 'code-block'
+    ];
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
@@ -41,13 +72,45 @@ const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, onClose, onSubmit
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block mb-1" htmlFor="content">Content</label>
-                        <textarea
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
+                        <label className="block mb-1" htmlFor="coverImage">Cover Image URL</label>
+                        <input
+                            type="text"
+                            value={coverImage}
+                            onChange={(e) => setCoverImage(e.target.value)}
                             className="border rounded w-full p-2"
                             required
                         />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block mb-1" htmlFor="content">Content</label>
+                        <ReactQuill
+                            theme="snow"
+                            value={content}
+                            onChange={setContent}
+                            modules={modules}
+                            formats={formats}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block mb-1" htmlFor="category">Category</label>
+                        <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            className="border rounded w-full p-2"
+                        >
+                            <option value="Tip">Tip</option>
+                            <option value="Story">Story</option>
+                        </select>
+                    </div>
+                    <div className='mb-4'>
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={isPremium}
+                                onChange={(e) => setIsPremium(e.target.checked)}
+                            />
+                            Premium Content
+                        </label>
                     </div>
                     <div className="flex justify-end">
                         <button

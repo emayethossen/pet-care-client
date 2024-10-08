@@ -3,26 +3,28 @@ import React from 'react';
 interface EditProfileModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: { name: string; bio: string; phone: string }) => void;
-    formData: { name: string; bio: string; phone: string } | null;
+    onSubmit: (data: { name: string; bio: string; phone: string; profilePicture?: string }) => void;
+    formData: { name: string; bio: string; phone: string; profilePicture?: string } | null;
 }
 
 const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, onSubmit, formData }) => {
     const [name, setName] = React.useState(formData?.name || '');
     const [bio, setBio] = React.useState(formData?.bio || '');
     const [phone, setPhone] = React.useState(formData?.phone || '');
+    const [profilePicture, setProfilePicture] = React.useState(formData?.profilePicture || '');
 
     React.useEffect(() => {
         if (formData) {
             setName(formData.name);
             setBio(formData.bio);
             setPhone(formData.phone);
+            setProfilePicture(formData.profilePicture || '');
         }
     }, [formData]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit({ name, bio, phone });
+        onSubmit({ name, bio, phone, profilePicture });
     };
 
     if (!isOpen) return null;
@@ -60,6 +62,17 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, on
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                             className="border rounded w-full p-2"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block mb-1" htmlFor="profilePicture">Profile Picture URL</label>
+                        <input
+                            type="text"
+                            name="profilePicture"
+                            value={profilePicture}
+                            onChange={(e) => setProfilePicture(e.target.value)}
+                            className="border rounded w-full p-2"
+                            placeholder="Enter image URL"
                         />
                     </div>
                     <div className="flex justify-end">

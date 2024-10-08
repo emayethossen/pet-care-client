@@ -20,12 +20,12 @@ const PopularBlogs = async () => {
                 <div className="space-y-4">
                     {blogs.length > 0 ? (
                         blogs.slice(0, 5).map((blog: any) => (
-                            <Link href={blog._id}>
+                            <Link href={`/blog/${blog._id}`}>
                                 <div className="flex gap-4 rounded-lg p-4">
                                     {/* Left Section (Image) */}
                                     <div className="w-2/5 shadow-md">
                                         <Image
-                                            src={blog.images[0]} // Using the first image from the images array
+                                            src={blog.coverImage} // Using the first image from the images array
                                             alt={blog.title}
                                             width={150}
                                             height={150}

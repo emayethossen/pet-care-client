@@ -19,7 +19,7 @@ const NewsletterSubscription = () => {
           />
           <button
             type="submit"
-            className="py-3 px-6 bg-green-500 text-white rounded-md font-semibold hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="py-3 px-6 bg-gradient-to-r from-[#F95C6B] to-[#E51284] text-white rounded-md font-semibold hover:from-red-200 hover:to-red-400 focus:outline-none focus:ring-2 focus:ring-red-400"
           >
             Subscribe
           </button>
