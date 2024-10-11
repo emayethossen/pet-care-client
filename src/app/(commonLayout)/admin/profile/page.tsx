@@ -5,11 +5,8 @@ import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
-import LoadingSpinner from '../components/pages/LoadingSpinner';
-import withAuth from '@/app/utils/withAuth';
-
-const EditProfileModal = dynamic(() => import('../components/pages/EditProfileModal'), { ssr: false });
-const MyPosts = dynamic(() => import('./my-post/page'), { ssr: false });
+import LoadingSpinner from '../../components/pages/LoadingSpinner';
+import EditProfileModal from '../../components/pages/EditProfileModal';
 
 interface UserProfile {
     name: string;
@@ -35,10 +32,10 @@ const Profile = () => {
             try {
                 const response = await axios.get('https://pet-care-server-three.vercel.app/api/users/me', {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('authToken')}`, 
+                        Authorization: `Bearer ${localStorage.getItem('authToken')}`, // Send token
                     },
                 });
-                setProfile(response.data?.data); 
+                setProfile(response.data?.data); // Set user profile data
             } catch (err: any) {
                 setError('Failed to load profile data.');
                 console.error('Error fetching profile:', err);
@@ -63,7 +60,7 @@ const Profile = () => {
             name: data.name,
             bio: data.bio,
             phone: data.phone,
-            profilePicture: data.profilePicture, 
+            profilePicture: data.profilePicture, // This should be the URL string
         };
 
         try {
@@ -72,12 +69,12 @@ const Profile = () => {
                     Authorization: `Bearer ${localStorage.getItem('authToken')}`,
                 },
             });
-            setProfile(response.data.data); 
-            toast.success("Profile updated successfully!"); 
-            handleCloseModal();
+            setProfile(response.data.data); // Update the profile with new data
+            toast.success("Profile updated successfully!"); // Show success toast
+            handleCloseModal(); // Close the modal after successful update
         } catch (error) {
             console.error('Error updating profile:', error);
-            toast.error("Failed to update profile."); 
+            toast.error("Failed to update profile."); // Show error toast
         }
     };
 
@@ -139,8 +136,6 @@ const Profile = () => {
                 onSubmit={handleSubmit}
                 formData={profile ? { name: profile.name, bio: profile.bio, phone: profile.phone, profilePicture: profile.profilePicture } : null}
             />
-
-            <MyPosts />
         </div>
     );
 };

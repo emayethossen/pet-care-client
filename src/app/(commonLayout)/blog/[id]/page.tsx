@@ -10,9 +10,10 @@ import { useRouter } from "next/navigation"; // To handle navigation
 import Comments from "../../components/pages/Comments";
 
 const BlogDetails = async ({ params }: { params: { id: string } }) => {
+    const DEFAULT_AVATAR_URL = 'https://i.ibb.co.com/0jPH8hR/avatardefault-92824.png'
     const router = useRouter(); // For navigation
     try {
-        const res = await fetch(`http://localhost:5000/api/posts/${params.id}`, {
+        const res = await fetch(`https://pet-care-server-three.vercel.app/api/posts/${params.id}`, {
             cache: "no-store",
         });
 
@@ -39,7 +40,7 @@ const BlogDetails = async ({ params }: { params: { id: string } }) => {
                         {/* Profile Picture */}
                         <Link href={`/profile/${data.author._id}`}>
                             <Image
-                                src={data.author.profilePicture} // Author image
+                                src={data.author.profilePicture || DEFAULT_AVATAR_URL} // Author image
                                 alt={data.author.name}
                                 width={40}
                                 height={40}
@@ -81,26 +82,6 @@ const BlogDetails = async ({ params }: { params: { id: string } }) => {
                             <p className="text-sm text-gray-500">Comments: {data.comments.length}</p>
                         </div>
                         <Comments postId={params.id} />
-
-                        {/* Previous and Next Buttons */}
-                        <div className="flex justify-between mt-6">
-                            {previousPostId && (
-                                <button
-                                    className="bg-gray-300 px-4 py-2 rounded"
-                                    onClick={() => router.push(`/blog/${previousPostId}`)}
-                                >
-                                    Previous
-                                </button>
-                            )}
-                            {nextPostId && (
-                                <button
-                                    className="bg-gray-300 px-4 py-2 rounded"
-                                    onClick={() => router.push(`/blog/${nextPostId}`)}
-                                >
-                                    Next
-                                </button>
-                            )}
-                        </div>
                     </div>
                 </div>
 

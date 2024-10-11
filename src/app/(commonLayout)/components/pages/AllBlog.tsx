@@ -3,7 +3,7 @@ import NewsletterSubscription from "./NewsletterSubscription";
 
 const AllBlog = async () => {
     try {
-        const res = await fetch("http://localhost:5000/api/posts", {
+        const res = await fetch("https://pet-care-server-three.vercel.app/api/posts", {
             cache: "no-store",
         });
 
@@ -18,7 +18,7 @@ const AllBlog = async () => {
                 <div className="space-y-8">
                     {blogs.length > 0 ? (
                         blogs.slice(0, 3).map((blog: any) => (
-                            <BlogCard blog={blog} />
+                            <BlogCard key={blog._id} blog={blog} />
                         ))
                     ) : (
                         <p>No blogs available</p>
@@ -28,7 +28,7 @@ const AllBlog = async () => {
                 <div className="space-y-8">
                     {blogs.length > 0 ? (
                         blogs.slice(3, 6).map((blog: any) => (
-                            <BlogCard blog={blog} />
+                            <BlogCard key={blog._id} blog={blog} />
                         ))
                     ) : (
                         <p>No blogs available</p>

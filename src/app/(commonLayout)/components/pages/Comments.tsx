@@ -24,7 +24,7 @@ const Comments = ({ postId }: { postId: string }) => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/posts/${postId}/comments`);
+                const res = await fetch(`https://pet-care-server-three.vercel.app/api/posts/${postId}/comments`);
                 if (!res.ok) throw new Error("Failed to fetch comments");
                 const { data } = await res.json();
                 setComments(data);
@@ -42,7 +42,7 @@ const Comments = ({ postId }: { postId: string }) => {
         setLoading(true);
 
         try {
-            const res = await fetch(`http://localhost:5000/api/posts/${postId}/comments`, {
+            const res = await fetch(`https://pet-care-server-three.vercel.app/api/posts/${postId}/comments`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -79,7 +79,7 @@ const Comments = ({ postId }: { postId: string }) => {
         if (!commentToDelete) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/api/comments/${commentToDelete}`, {
+            const res = await fetch(`https://pet-care-server-three.vercel.app/api/comments/${commentToDelete}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -104,7 +104,7 @@ const Comments = ({ postId }: { postId: string }) => {
         setLoading(true);
 
         try {
-            const res = await fetch(`http://localhost:5000/api/comments/${editingCommentId}`, {
+            const res = await fetch(`https://pet-care-server-three.vercel.app/api/comments/${editingCommentId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

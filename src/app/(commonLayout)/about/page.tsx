@@ -1,19 +1,19 @@
 import Image from 'next/image';
-import nextImage from '../../../assets/content.jpg'
-import nextImage1 from '../../../assets/community.jpg'
-import nextImage2 from '../../../assets/expert.jpg'
+import nextImage from '../../../assets/content.jpg';
+import nextImage1 from '../../../assets/community.jpg';
+import nextImage2 from '../../../assets/expert.jpg';
 
 const About = () => {
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-      <div className="container mx-auto p-6 text-center">
+    <div className="flex flex-col items-center justify-center">
+      <div className="container mx-auto p-6 text-center my-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-6">About Pet Care Tips & Stories</h1>
-        <p className="text-lg text-gray-600 mb-4">
+        <p className="text-lg text-gray-600 mb-4 md:w-2/3 mx-auto">
           Welcome to Pet Care Tips & Stories, your one-stop platform for discovering expert pet care
-          advice and heartwarming stories from fellow pet lovers. Whether you're a seasoned pet
-          parent or just starting, we've got something for everyone!
+          advice and heartwarming stories from fellow pet lovers. Whether you&apos;re a seasoned pet
+          parent or just starting, we&apos;ve got something for everyone!
         </p>
-        <p className="text-lg text-gray-600 mb-4">
+        <p className="text-lg text-gray-600 mb-4 md:w-2/3 mx-auto">
           Our mission is to provide valuable tips and insights to help you take the best care of
           your furry friends while creating a space for the community to share their personal pet
           stories. From health advice to fun experiences, our content is crafted to keep you

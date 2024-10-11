@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // Import Next.js router for navigation
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 const UserProfile = ({ params }: { params: { userId: string } }) => {
+    const DEFAULT_AVATAR_URL = 'https://i.ibb.co.com/0jPH8hR/avatardefault-92824.png'
     const [profileData, setProfileData] = useState<any>(null);
     const [currentUser, setCurrentUser] = useState<any>(null); // Store the logged-in user's profile data
     const [isFollowing, setIsFollowing] = useState(false);
@@ -16,7 +18,7 @@ const UserProfile = ({ params }: { params: { userId: string } }) => {
     useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/users/me", {
+                const res = await fetch("https://pet-care-server-three.vercel.app/api/users/me", {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
                     },
@@ -44,7 +46,7 @@ const UserProfile = ({ params }: { params: { userId: string } }) => {
     // Fetch the profile data of the user being visited
     const fetchProfileData = async (currentUserId: string) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/users/${params.userId}`, {
+            const res = await fetch(`https://pet-care-server-three.vercel.app/api/users/${params.userId}`, {
                 cache: "no-store",
             });
 
@@ -70,7 +72,7 @@ const UserProfile = ({ params }: { params: { userId: string } }) => {
     // Handle follow user
     const handleFollow = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/users/follow", {
+            const res = await fetch("https://pet-care-server-three.vercel.app/api/users/follow", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,7 +100,7 @@ const UserProfile = ({ params }: { params: { userId: string } }) => {
     // Handle unfollow user
     const handleUnfollow = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/users/unfollow", {
+            const res = await fetch("https://pet-care-server-three.vercel.app/api/users/unfollow", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -138,10 +140,12 @@ const UserProfile = ({ params }: { params: { userId: string } }) => {
         <div>
             <div className="max-w-md mx-auto my-10 bg-white shadow-md rounded-lg overflow-hidden">
                 <div className="flex flex-col items-center p-5">
-                    <img
+                    <Image
                         className="w-24 h-24 rounded-full border-2 border-gray-300"
-                        src={profileData?.profilePicture || "/assets/logo.png"}
+                        src={profileData.profilePicture || DEFAULT_AVATAR_URL}
                         alt="Profile Picture"
+                        width={96}
+                        height={96}
                     />
                     <h1 className="mt-4 text-2xl font-bold text-gray-800">{profileData?.name}</h1>
                     <p className="mt-2 text-gray-600 text-center px-4">{profileData?.bio || "Pet Lover"}</p>

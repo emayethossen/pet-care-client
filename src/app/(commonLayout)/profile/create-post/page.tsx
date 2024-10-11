@@ -2,9 +2,12 @@
 
 import axios from 'axios';
 import { useState } from 'react';
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic'; // Import dynamic
 import 'react-quill/dist/quill.snow.css';
 import { toast } from 'react-toastify';
+
+// Dynamically import ReactQuill with SSR disabled
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const CreatePost = () => {
     const [title, setTitle] = useState('');
@@ -17,25 +20,29 @@ const CreatePost = () => {
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        const postData = { title, coverImage, content, isPremium, category }; // Include isPremium
+        const postData = { title, coverImage, content, isPremium, category };
 
         try {
-            setLoading(true); // Set loading to true before the request
-            const response = await axios.post('http://localhost:5000/api/posts', postData, { // Send postData directly
+            setLoading(true);
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                throw new Error('No authentication token found.');
+            }
+            const response = await axios.post('https://pet-care-server-three.vercel.app/api/posts', postData, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
 
             toast.success("Post created successfully!");
-            // Optionally clear the form
             setTitle('');
             setContent('');
-            setCategory('Tip'); // Reset to default category
+            setCategory('Tip');
             setCoverImage('');
-            setIsPremium(false); // Reset isPremium checkbox
+            setIsPremium(false);
         } catch (err: any) {
-            setError('Failed to create post. Please try again.'); // Set error message
+            const errorMessage = err.response?.data?.message || 'Failed to create post. Please try again.';
+            setError(errorMessage);
             console.error('Error creating post:', err.response?.data || err);
         } finally {
             setLoading(false);
@@ -103,6 +110,7 @@ const CreatePost = () => {
                         onChange={setContent}
                         modules={modules}
                         formats={formats}
+                        className="h-40" // Add height for better UX
                     />
                 </div>
                 <div className="mb-4">
@@ -120,13 +128,14 @@ const CreatePost = () => {
                     </select>
                 </div>
                 <div className='mb-4'>
-                    <label>
+                    <label className="inline-flex items-center">
                         <input
                             type="checkbox"
                             checked={isPremium}
                             onChange={(e) => setIsPremium(e.target.checked)}
+                            className="form-checkbox h-5 w-5 text-blue-600"
                         />
-                        Premium Content
+                        <span className="ml-2 text-gray-700">Premium Content</span>
                     </label>
                 </div>
                 {error && <p className="text-red-500">{error}</p>}

@@ -27,6 +27,7 @@ interface Blog {
 }
 
 const BlogCard = ({ blog }: { blog: Blog }) => {
+    const DEFAULT_AVATAR_URL = 'https://i.ibb.co.com/0jPH8hR/avatardefault-92824.png'
     const [truncatedContent, setTruncatedContent] = useState('');
     const router = useRouter();
 
@@ -60,7 +61,7 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
 
     return (
         <div className="md:flex text-center md:text-left gap-8 rounded-lg p-4">
-            <div className="w-1/3 shadow-md">
+            <div className="w-1/3 mx-auto mb-4 md:mb-0 shadow-md">
                 <Image
                     src={blog.coverImage}
                     alt={blog.title}
@@ -83,7 +84,7 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
                 <div className="flex items-center gap-4 mb-3">
                     <Link href={`/profile/${blog.author._id}`}>
                         <Image
-                            src={blog.author.profilePicture}
+                            src={blog.author.profilePicture || DEFAULT_AVATAR_URL}
                             alt={blog.author.name}
                             width={40}
                             height={40}

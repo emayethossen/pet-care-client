@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import EditPostModal from '../EditPostModal';
+import EditPostModal from '../../components/pages/EditPostModal';
 import ConfirmationModal from '@/app/utils/ComfirmationModal';
 import { Edit, Trash } from 'lucide-react';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ interface Post {
     _id: string;
     title: string;
     content: string;
-    coverImage: string; // Added coverImage to Post type
+    coverImage: string; 
     category: string;
     isPremium: boolean;
     createdAt: string;
@@ -32,7 +32,7 @@ const MyPosts = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/my-posts', {
+                const response = await axios.get('https://pet-care-server-three.vercel.app/api/my-posts', {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
                     },
@@ -61,7 +61,7 @@ const MyPosts = () => {
     const handleUpdatePost = async (updatedPost: { title: string; content: string; coverImage: string; category: string; isPremium: boolean }) => {
         if (currentPost) {
             try {
-                await axios.put(`http://localhost:5000/api/posts/${currentPost._id}`, updatedPost, {
+                await axios.put(`https://pet-care-server-three.vercel.app/api/posts/${currentPost._id}`, updatedPost, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
                     },
@@ -92,14 +92,14 @@ const MyPosts = () => {
     const handleDeletePost = async () => {
         if (postToDelete) {
             try {
-                await axios.delete(`http://localhost:5000/api/posts/${postToDelete}`, {
+                await axios.delete(`https://pet-care-server-three.vercel.app/api/posts/${postToDelete}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
                     },
                 });
                 // Remove the post from local state
                 setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postToDelete));
-                toast.success("Post deleted successfully!"); // Show success toast
+                toast.success("Post deleted successfully!");
             } catch (err: any) {
                 setError('Failed to delete post. Please try again.');
             } finally {
@@ -127,7 +127,7 @@ const MyPosts = () => {
 
     return (
         <div className="container mx-auto py-8">
-            <h1 className="text-3xl font-bold mb-6">My Posts</h1>
+            <h1 className="text-3xl font-bold text-center mb-6">My Posts</h1>
 
             {posts.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

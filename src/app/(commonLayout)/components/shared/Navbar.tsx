@@ -1,18 +1,18 @@
 "use client";
 
-import { MenuIcon, XIcon, UserCircleIcon } from "lucide-react"; // Import UserCircleIcon
+import { MenuIcon, XIcon, UserCircleIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import {jwtDecode }from "jwt-decode"; // Import jwt-decode
+import { jwtDecode } from "jwt-decode";
 import nextImage from '../../../../assets/logo.png';
 import Image from "next/image";
+// import ThemeSwitcher from "../pages/ThemeSwitcher";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [user, setUser] = useState<any>(null);
-    const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false); // State for profile menu
+    const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
     const router = useRouter();
 
     const toggleMenu = () => {
@@ -20,7 +20,7 @@ const Navbar = () => {
     };
 
     const toggleProfileMenu = () => {
-        setIsProfileMenuOpen(!isProfileMenuOpen); // Toggle profile dropdown
+        setIsProfileMenuOpen(!isProfileMenuOpen);
     };
 
     const handleLogout = () => {
@@ -29,34 +29,12 @@ const Navbar = () => {
         router.push("/login");
     };
 
-    // Function to fetch the user info
-    // const fetchUser = async () => {
-    //     const token = localStorage.getItem("authToken");
-    //     if (token) {
-    //         try {
-    //             const response = await axios.get("http://localhost:5000/api/users/me", {
-    //                 headers: {
-    //                     Authorization: `Bearer ${token}`,
-    //                 },
-    //             });
-    //             setUser(response.data);
-    //         } catch (error) {
-    //             console.error("Failed to fetch user data", error);
-    //         }
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     fetchUser();
-    // }, []);
-
     const fetchUser = async () => {
         const token = localStorage.getItem("authToken");
         if (token) {
             try {
                 const decoded = jwtDecode(token);
-                setUser(decoded); // Set user with decoded token data
-                console.log("Decoded user:", decoded); // Debugging log
+                setUser(decoded);
             } catch (error) {
                 console.error("Failed to decode token", error);
             }
@@ -67,8 +45,6 @@ const Navbar = () => {
         fetchUser();
     }, []);
 
-
-    console.log("Current user:", user);
     return (
         <nav className="bg-[#FFF9F3] text-[#121416]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -103,6 +79,7 @@ const Navbar = () => {
                                 >
                                     Blog
                                 </Link>
+
                                 {/* Conditionally render admin links */}
 
                             </div>
@@ -110,11 +87,24 @@ const Navbar = () => {
                     </div>
 
                     <div className="flex items-center">
+                        {user && user.role === 'user' && (
+                            <>
+                                <Link
+                                    href="/profile/create-post"
+                                    className="py-2 hidden mr-2 md:flex px-4 bg-gradient-to-r from-[#F95C6B] to-[#E51284] text-white rounded-md font-semibold hover:from-red-200 hover:to-red-400 focus:outline-none focus:ring-2 focus:ring-red-400"
+                                >
+                                    Create Post
+                                </Link>
+                            </>
+                        )}
                         {user ? (
                             <div className="relative">
-                                <button onClick={toggleProfileMenu}>
-                                    <UserCircleIcon className="h-8 w-8 text-gray-700 hover:text-gray-800" />
-                                </button>
+                                <div className="md:flex gap-4 justify-center items-center">
+
+                                    <button onClick={toggleProfileMenu}>
+                                        <UserCircleIcon className="h-8 w-8 text-gray-700 hover:text-gray-800" />
+                                    </button>
+                                </div>
 
                                 {/* Profile dropdown menu */}
                                 {isProfileMenuOpen && (
@@ -125,28 +115,39 @@ const Navbar = () => {
                                         >
                                             Profile
                                         </Link>
-                                        <Link
-                                            href="/profile/create-post"
-                                            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]"
-                                        >
-                                            Create Post
-                                        </Link>
-                                        <Link
-                                            href="/profile/my-post"
-                                            className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]"
-                                        >
-                                            My Post
-                                        </Link>
-                                        <Link
-                                            href="/dashboard"
-                                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                                        >
-                                            Dashboard
-                                        </Link>
+                                        {user && user.role === 'user' && (
+                                            <>
+                                                <Link
+                                                    href="/profile/create-post"
+                                                    className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]"
+                                                >
+                                                    Create Post
+                                                </Link>
+                                                <Link
+                                                    href="/profile/my-post"
+                                                    className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]"
+                                                >
+                                                    My Post
+                                                </Link>
+                                                <Link
+                                                    href="/profile/pdf-generate"
+                                                    className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]"
+                                                >
+                                                    PDF Generator
+                                                </Link>
+                                            </>
+                                        )}
+
 
                                         {/* Extra admin links in profile menu */}
                                         {user && user.role === 'admin' && (
                                             <>
+                                                <Link
+                                                    href="/dashboard"
+                                                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                                >
+                                                    Dashboard
+                                                </Link>
                                                 <Link href="/admin/users" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-[#FEF2F2]">
                                                     User
                                                 </Link>
@@ -184,6 +185,7 @@ const Navbar = () => {
                                 </Link>
                             </>
                         )}
+                        {/* <ThemeSwitcher /> */}
                         <div className="-mr-2 flex md:hidden">
                             <button
                                 onClick={toggleMenu}

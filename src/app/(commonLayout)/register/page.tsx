@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'; 
-import axios from 'axios'; // Import Axios
+import { useRouter } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGoogle, faFacebookF, faTwitter, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import axios from 'axios'; 
 
 const Register = () => {
-    const router = useRouter(); // Initialize the router
+    const router = useRouter(); 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,8 +25,7 @@ const Register = () => {
         }
         const role = 'user';
         try {
-            // Use Axios to send the POST request
-            const response = await axios.post('http://localhost:5000/api/auth/signup', {
+            const response = await axios.post('https://pet-care-server-three.vercel.app/api/auth/signup', {
                 name,
                 email,
                 password,
@@ -36,13 +37,11 @@ const Register = () => {
             if (response.status === 201) {
                 setSuccessMessage('User registered successfully');
 
-                // Redirect to login after 2 seconds if registration is successful
                 setTimeout(() => {
                     router.push('/login');
                 }, 2000);
             }
         } catch (error: any) {
-            // Handle error message
             setErrorMessage(error.response?.data?.message || 'Something went wrong');
         }
     };
@@ -55,26 +54,45 @@ const Register = () => {
                 <div className="relative z-10 flex items-center gap-2">
                     <button
                         className="p-2 rounded text-white bg-green-500 font-semibold"
-                        onClick={() => router.push('/login')} // Use router for navigation
+                        onClick={() => router.push('/')} 
                     >
-                        Login
-                    </button>
-                    <button className="p-2 rounded text-white bg-green-500 font-semibold">
-                        Register
+                        Home
                     </button>
                 </div>
 
                 <div className="relative z-10 text-white mb-6">
-                    <h2 className="text-2xl font-semibold">BikeRent</h2>
+                    <h2 className="text-2xl font-semibold">Pet Love</h2>
                     <p className="mt-2">
-                        Experience the freedom of the road with BikeRent. Explore our wide range of rental bikes for every adventure, from city cruising to mountain biking.
+                        Discover expert tips, heartwarming stories, and essential advice to ensure your pets live a happy, healthy life. Join our community for the best in pet care and companionship.
                     </p>
                 </div>
             </div>
 
             <div className="lg:border w-full lg:p-14 p-6 bg-white">
-                <h2 className="md:text-3xl text-xl font-bold text-center uppercase">BikeRent</h2>
+                <h2 className="md:text-3xl text-xl font-bold text-center uppercase">Pet Love</h2>
                 <p className="md:text-xl text-lg mb-6 font-bold text-center">Create An Account</p>
+                {/* Social Login Buttons */}
+                <div className="grid grid-cols-4 md:w-1/2 w-3/4 mx-auto justify-center items-center gap-2">
+                    <button className="btn btn-outline w-[32px] md:w-[48px] rounded flex justify-center items-center h-[32px] md:h-[48px] bg-red-500">
+                        <FontAwesomeIcon icon={faGoogle} className="text-white" />
+                    </button>
+                    <button className="btn btn-outline w-[32px] md:w-[48px] rounded flex justify-center items-center h-[32px] md:h-[48px] bg-blue-600">
+                        <FontAwesomeIcon icon={faFacebookF} className="text-white" />
+                    </button>
+                    <button className="btn btn-outline w-[32px] md:w-[48px] rounded flex justify-center items-center h-[32px] md:h-[48px] bg-blue-400">
+                        <FontAwesomeIcon icon={faTwitter} className="text-white" />
+                    </button>
+                    <button className="btn btn-outline w-[32px] md:w-[48px] rounded flex justify-center items-center h-[32px] md:h-[48px] bg-blue-700">
+                        <FontAwesomeIcon icon={faLinkedinIn} className="text-white" />
+                    </button>
+                </div>
+
+                {/* Separator Line */}
+                <div className="flex items-center justify-center my-6">
+                    <hr className="w-full border-gray-300" />
+                    <span className="px-4 text-gray-500">OR</span>
+                    <hr className="w-full border-gray-300" />
+                </div>
 
                 <form className="form-control space-y-4" onSubmit={handleSubmit}>
                     <input

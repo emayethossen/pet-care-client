@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'; // Updated for Next.js App Router
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebookF, faTwitter, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import axios from 'axios';
+import Link from 'next/link';
 
 const Login = () => {
   const router = useRouter(); // Initialize router for navigation
@@ -18,7 +19,7 @@ const Login = () => {
 
     try {
       // Sending login request to backend
-      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const response = await axios.post('https://pet-care-server-three.vercel.app/api/auth/login', { email, password });
 
       // Assuming the response contains the token and role in response.data
       const { token, role } = response.data;
@@ -32,7 +33,7 @@ const Login = () => {
       if (role === 'admin') {
         router.push('/admin'); // Redirect to admin dashboard
       } else if (role === 'user') {
-        router.push('/'); // Redirect to user dashboard
+        router.push('/profile'); // Redirect to user dashboard
       } else {
         setError('Invalid role'); // Handle unexpected role
       }
@@ -53,20 +54,24 @@ const Login = () => {
       <div className="md:flex hidden flex-col justify-between bg-cover bg-center lg:p-10 relative rounded overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10 flex items-center gap-2">
-          <button className="p-2 rounded text-white bg-green-500 font-semibold">Login</button>
-          <button className="p-2 rounded text-white bg-green-500 font-semibold">Register</button>
+          <button
+            className="p-2 rounded text-white bg-green-500 font-semibold"
+            onClick={() => router.push('/')} // Use router for navigation
+          >
+            Home
+          </button>
         </div>
         <div className="relative z-10 text-white mb-6">
-          <h2 className="text-2xl font-semibold">BikeRent</h2>
+          <h2 className="text-2xl font-semibold">Pet Love</h2>
           <p className="mt-2">
-            Experience the freedom of the road with BikeRent. Explore our wide range of rental bikes for every adventure, from city cruising to mountain biking.
+            Discover expert tips, heartwarming stories, and essential advice to ensure your pets live a happy, healthy life. Join our community for the best in pet care and companionship.
           </p>
         </div>
       </div>
 
       {/* Right Section - Login Form */}
       <div className="lg:border w-full lg:p-14 p-6 bg-white">
-        <h2 className="md:text-3xl text-xl font-bold text-center uppercase">BikeRent</h2>
+        <h2 className="md:text-3xl text-xl font-bold text-center uppercase">Pet Love</h2>
         <p className="md:text-xl text-lg mb-6 font-bold text-center">Sign In To Your Account</p>
 
         {/* Social Login Buttons */}
@@ -115,7 +120,10 @@ const Login = () => {
               <input type="checkbox" className="form-checkbox" />
               <span className="text-gray-600">Remember Me</span>
             </label>
-            <p className="flex items-center text-red-300 cursor-pointer">Forget Password?</p>
+            {/* <p className="flex items-center text-red-300 cursor-pointer">Forget Password?</p> */}
+            <p className="flex items-center text-red-300 cursor-pointer" onClick={() => router.push('https://pet-care-client-three.vercel.app/forgot-password')}>
+              Forgot Password?
+            </p>
           </div>
           <input
             type="submit"
@@ -124,7 +132,7 @@ const Login = () => {
           />
           {error && <p className="mt-2 text-center text-red-500">{error}</p>} {/* Display error message */}
           <p className="mt-2 text-center">
-            Don't have an account? <span className="text-blue-500 cursor-pointer">Register here</span>
+            Don't have an account? <Link href='/register' className="text-blue-500 cursor-pointer">Register here</Link >
           </p>
         </form>
       </div>

@@ -2,6 +2,7 @@ import AllBlog from "./components/pages/AllBlog";
 import Category from "./components/pages/Category";
 import PopularBlogs from "./components/pages/PopularBlogs";
 
+
 export default async function Posts() {
   return (
     <div className="container mx-auto">

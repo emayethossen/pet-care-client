@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+  }
+
+[data-theme='light'] {
+    --tw-bg-color: #ffffff; /* White background */
+    --tw-text-color: #000000; /* Black text */
+  }
+  
+  [data-theme='dark'] {
+    --tw-bg-color: #000000; /* Black background */
+    --tw-text-color: #ffffff; /* White text */
+  }
+  
+  body {
+    background-color: var(--tw-bg-color);
+    color: var(--tw-text-color);
+  }

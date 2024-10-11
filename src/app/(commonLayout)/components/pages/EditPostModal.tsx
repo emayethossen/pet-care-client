@@ -1,10 +1,11 @@
-"use client"
-// EditPostModal.tsx
+"use client";
 
 import React, { useState, useEffect } from 'react';
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
-import { toast } from 'react-toastify';
+
+// Dynamically import ReactQuill with no SSR
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 interface EditPostModalProps {
     isOpen: boolean;
@@ -45,7 +46,7 @@ const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, onClose, onSubmit
             [{ 'color': [] }, { 'background': [] }],
             [{ 'align': [] }],
             ['link', 'image', 'code-block'],
-            ['clean']
+            ['clean'],
         ],
     };
 
@@ -53,7 +54,7 @@ const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, onClose, onSubmit
         'header', 'font', 'size',
         'bold', 'italic', 'underline', 'strike', 'blockquote',
         'list', 'bullet', 'indent',
-        'link', 'image', 'color', 'background', 'align', 'code-block'
+        'link', 'image', 'color', 'background', 'align', 'code-block',
     ];
 
     return (

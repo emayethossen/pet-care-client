@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import Sidebar from "../components/pages/Sidebar";
 
 export default function AdminDashboardLayout({
   children,
@@ -20,7 +21,7 @@ export default function AdminDashboardLayout({
     if (!authToken) {
       toast.info("Access for you have to login.", {
         onClose: () => {
-          router.push("/login"); // Redirect to login
+          router.push("/login");
         },
       });
       setIsLoading(false);
@@ -28,7 +29,7 @@ export default function AdminDashboardLayout({
       const userRole = JSON.parse(atob(authToken.split(".")[1])).role;
       if (userRole !== "admin") {
         toast.error("Admin access only");
-        router.push("/"); // Redirect to home or another appropriate page
+        router.push("/");
       } else {
         setIsAdmin(true);
       }
@@ -37,17 +38,23 @@ export default function AdminDashboardLayout({
   }, [router]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Optionally show a loading spinner or message
+    return <div>Loading...</div>;
   }
 
   if (!isAdmin) {
-    return null; // Do not render anything if not an admin
+    return null;
   }
 
   return (
     <div>
-      <h1>Admin Dashboard Sidebar</h1>
-      {children}
+      <div className="flex">
+        <div className="hidden h-full md:flex">
+          <Sidebar />
+        </div>
+        <div className="flex w-full justify-center px-8">
+          {children}
+        </div>
+      </div>
     </div>
   );
 }

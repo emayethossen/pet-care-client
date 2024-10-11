@@ -20,7 +20,7 @@ const FollowerList = () => {
         const fetchFollowers = async () => {
             if (userId) {
                 try {
-                    const res = await axios.get(`http://localhost:5000/api/users/${userId}/followers`, {
+                    const res = await axios.get(`https://pet-care-server-three.vercel.app/api/users/${userId}/followers`, {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Auth token from localStorage
                         },

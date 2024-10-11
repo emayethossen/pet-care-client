@@ -12,20 +12,20 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>, isAdmin:
       if (!authToken) {
         toast.info("Access for you have to login.", {
           onClose: () => {
-            router.push("/login"); // Redirect to login
+            router.push("/login"); 
           },
         });
       } else if (isAdmin) {
         const userRole = JSON.parse(atob(authToken.split(".")[1])).role;
         if (userRole !== "admin") {
           toast.error("Admin access only");
-          router.push("/"); // Redirect to home or another appropriate page
+          router.push("/"); 
         }
       }
     }, [authToken, isAdmin, router]);
 
     if (!authToken || (isAdmin && JSON.parse(atob(authToken.split(".")[1])).role !== "admin")) {
-      return null; // Do not render anything if not authenticated or not an admin
+      return null; 
     }
 
     return <WrappedComponent {...props} />;

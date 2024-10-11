@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from 'react';
 
@@ -20,7 +20,7 @@ const AdminUserList: React.FC = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/admin/users', {
+            const response = await fetch('https://pet-care-server-three.vercel.app/api/admin/users', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -44,7 +44,7 @@ const AdminUserList: React.FC = () => {
     const handlePromoteUser = async (userId: string) => {
         setIsPromoting(true);
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/users/${userId}/promote`, {
+            const response = await fetch(`https://pet-care-server-three.vercel.app/api/admin/users/${userId}/promote`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const AdminUserList: React.FC = () => {
         if (window.confirm('Are you sure you want to delete this user?')) {
             setIsDeleting(true);
             try {
-                const response = await fetch(`http://localhost:5000/api/admin/users/${userId}`, {
+                const response = await fetch(`https://pet-care-server-three.vercel.app/api/admin/users/${userId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem("authToken")}`,
@@ -91,7 +91,7 @@ const AdminUserList: React.FC = () => {
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
-                Loadinggg......
+                <div className="text-lg font-bold animate-spin">Loading...</div>
             </div>
         );
     }
@@ -105,28 +105,28 @@ const AdminUserList: React.FC = () => {
     }
 
     return (
-        <div className="p-4 md:p-8">
-            <h2 className="md:text-2xl text-xl font-semibold mb-4">User Management</h2>
+        <div className="container mx-auto p-4 md:p-8">
+            <h2 className="text-2xl text-center font-bold mb-6 text-blue-600">User Management</h2>
             {users && users.length > 0 ? (
                 <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-200">
-                        <thead>
-                            <tr className="bg-gray-100 border-b md:grid grid-cols-5">
-                                <th className="p-3 hidden md:flex justify-center items-center text-center text-sm font-semibold text-gray-700">ID</th>
-                                <th className="p-3 text-center text-sm font-semibold text-gray-700">Name</th>
-                                <th className="p-3 hidden md:flex justify-center items-center text-center text-sm font-semibold text-gray-700">Email</th>
-                                <th className="p-3 hidden md:flex justify-center items-center text-center text-sm font-semibold text-gray-700">Role</th>
-                                <th className="p-3 text-center text-sm font-semibold text-gray-700">Actions</th>
+                    <table className="min-w-full bg-white shadow-md rounded-lg">
+                        <thead className="bg-gray-200">
+                            <tr className="border-b">
+                                <th className="p-3 text-left text-sm font-semibold text-gray-700">ID</th>
+                                <th className="p-3 text-left text-sm font-semibold text-gray-700">Name</th>
+                                <th className="p-3 text-left text-sm font-semibold text-gray-700">Email</th>
+                                <th className="p-3 text-left text-sm font-semibold text-gray-700">Role</th>
+                                <th className="p-3 text-left text-sm font-semibold text-gray-700">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="text-gray-600">
                             {users.map((user) => (
-                                <tr key={user._id} className="md:grid grid-cols-5">
-                                    <td className="p-3 hidden md:block text-center text-sm text-gray-700">{user._id}</td>
-                                    <td className="p-3 text-center text-sm text-gray-700">{user.name}</td>
-                                    <td className="p-3 hidden md:block text-center text-sm text-gray-700">{user.email}</td>
-                                    <td className="p-3 hidden md:block text-center text-sm text-gray-700">{user.role}</td>
-                                    <td className="text-center text-sm text-gray-700 grid md:grid-cols-2 justify-center items-center md:space-x-2 space-y-2">
+                                <tr key={user._id} className="border-b hover:bg-gray-50">
+                                    <td className="p-3 text-sm">{user._id}</td>
+                                    <td className="p-3 text-sm">{user.name}</td>
+                                    <td className="p-3 text-sm">{user.email}</td>
+                                    <td className="p-3 text-sm">{user.role}</td>
+                                    <td className="p-3 flex space-x-2">
                                         {user.role !== 'admin' && (
                                             <button
                                                 onClick={() => handlePromoteUser(user._id)}

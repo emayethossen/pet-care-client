@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const LatestPost = async () => {
     try {
-        const res = await fetch("http://localhost:5000/api/posts", {
+        const res = await fetch("https://pet-care-server-three.vercel.app/api/posts", {
             cache: "no-store",
         });
 
@@ -20,7 +20,7 @@ const LatestPost = async () => {
                 <div className="space-y-4">
                     {blogs.length > 0 ? (
                         blogs.slice(0, 2).map((blog: any) => (
-                            <Link href={`/blog/${blog._id}`}>
+                            <Link key={blog._id} href={`/blog/${blog._id}`}>
                                 <div className="flex gap-4 rounded-lg p-4">
                                     {/* Left Section (Image) */}
                                     <div className="w-2/5 shadow-md">
